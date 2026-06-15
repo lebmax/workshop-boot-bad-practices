@@ -1,0 +1,27 @@
+group = 'ru.yandex.workshop'
+version = '0.0.1-SNAPSHOT'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
+    }
+}
+
+
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+    apply(plugin: 'java')
+    apply(plugin: 'org.springframework.boot')
+    apply(plugin: 'io.spring.dependency-management')
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+}

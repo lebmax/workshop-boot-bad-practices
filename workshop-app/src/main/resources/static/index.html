@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="materialize/materialize.min.css" media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset=utf-8>
+</head>
+
+<body class="container blue-grey darken-4">
+
+<nav>
+    <div class="nav-wrapper blue darken-4 z-depth-5">
+        <a href="#" class="brand-logo center white-text">Воркшоп — Spring Boot Best Practices</a>
+    </div>
+</nav>
+
+<div class="row">
+    <div class="col s1"></div>
+    <div class="col s10 center">
+        <h3 class="center-align white-text">Сервис статистики по имени</h3>
+        <a class="flow-text grey-text" href="/api/names/Michael/info">/api/names/{name}/info</a>
+    </div>
+</div>
+<div class="row blue-grey darken-3 z-depth-5">
+    <div class="col s1"></div>
+    <div class="col s3 white-text">
+        <h4 class="center">Запрос</h4>
+        <!-- Форма для ввода имени -->
+        <form action="javascript:void(0);">
+            <div class="input-field">
+                <input id="name" class="white-text" type="text" name="name" required/>
+                <label for="name" class="white-text">Введите имя</label>
+            </div>
+            <button type="submit" class="btn waves-effect waves-light blue-grey darken-5 white-text darken-5" onclick="renderResponse()">Узнать</button>
+        </form>
+        <div class="section"></div>
+    </div>
+    <div class="col s7 white-text center">
+        <h4 id="resultDescription">Результат</h4>
+        <div id="resultDiv"></div>
+        <div class="section"></div>
+    </div>
+</div>
+<div class="row">
+    <p class="flow-text white-text lighten-3" style="font-size: 14px">NOTE: Не критикуй интерфейс :) Если не удержаться — пользуй postman, curl, browser, ... Пример: curl -i "http://127.0.0.1:8080/api/names/john/info"</p>
+</div>
+
+<!--JavaScript at end of body for optimized loading-->
+<script type="text/javascript" src="materialize/materialize.min.js"></script>
+<script type="text/javascript" src="index.js"></script>
+</body>
+</html>
