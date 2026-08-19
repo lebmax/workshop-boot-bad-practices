@@ -1,0 +1,16 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    env:
+      show-values: always
+    configprops:
+      show-values: always
+    health:
+      show-details: always
+
+workshop:
+  insecure-actuator-demo:
+    visible-value: DEMO_ONLY_NOT_A_REAL_SECRET
