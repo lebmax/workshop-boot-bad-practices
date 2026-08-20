@@ -1,16 +1,9 @@
 spring:
   application:
     name: workshop-name-info
-  datasource:
-    url: jdbc:h2:mem:workshop
-    hikari:
-      maximum-pool-size: 4
-      connection-timeout: 1000
   main:
     allow-circular-references: true
 rate-limiter:
   enabled: true
   attempts-limit: 2
   attempt-expiration-seconds: 10
-transaction-demo:
-  slow-network-url: http://127.0.0.1:${server.port:8080}/api/transaction-demo/slow-network?delayMillis={delayMillis}

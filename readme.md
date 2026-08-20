@@ -8,10 +8,11 @@
 * Нефункциональные требования — количество запросов с одного IP должно быть ограничено (rate-limit)
 
 # Структура
-Проект состоит из двух модулей:
+Проект состоит из трёх модулей:
 
 * [workshop-app](workshop-app) — само приложение с REST-сервисом и UI-страницей
 * [rate-limiter-starter](rate-limiter-starter) — наш стартер, который используется в приложении и каких-то других наших проектах
+* [bad-practices-examples](bad-practices-examples) — изолированные запускаемые примеры ошибок в Spring Boot
 
 ## workshop-app (Практика, часть 1)
 
@@ -23,6 +24,11 @@
 1. ...
 2. ...
 
+## bad-practices-examples (Дополнительные демонстрации)
+
+Отдельное Spring Boot-приложение с H2 и Actuator. Запускается на порту `8081`
+и не влияет на зависимости и конфигурацию `workshop-app`.
+
 ### Долгий сетевой запрос внутри транзакции
 
 В `TransactionalNetworkService` метод открывает
@@ -32,14 +38,14 @@ JDBC-соединение остаётся занято транзакцией.
 Запустите приложение:
 
 ```bash
-./gradlew :workshop-app:bootRun
+./gradlew :bad-practices-examples:bootRun
 ```
 
 Затем одновременно выполните пять запросов:
 
 ```bash
 for i in {1..5}; do
-  curl "http://127.0.0.1:8080/api/transaction-demo/bad?delayMillis=3000" &
+  curl "http://127.0.0.1:8081/api/transaction-demo/bad?delayMillis=3000" &
 done
 wait
 ```
@@ -55,7 +61,7 @@ wait
 
 ```bash
 curl -X POST \
-  "http://127.0.0.1:8080/api/bad-practices/transactions/self-invocation?marker=lesson-1"
+  "http://127.0.0.1:8081/api/bad-practices/transactions/self-invocation?marker=lesson-1"
 ```
 
 `SelfInvocationTransactionService` вызывает аннотированный метод через `this`.
@@ -70,7 +76,7 @@ auto-commit и остаётся в БД после `RuntimeException`. Поле 
 
 ```bash
 curl -X POST \
-  "http://127.0.0.1:8080/api/bad-practices/transactions/swallowed-exception?marker=lesson-2"
+  "http://127.0.0.1:8081/api/bad-practices/transactions/swallowed-exception?marker=lesson-2"
 ```
 
 `SwallowedExceptionTransactionService` ловит `RuntimeException` внутри
@@ -84,7 +90,7 @@ interceptor метод завершился успешно, поэтому ст�
 
 ```bash
 curl -X POST \
-  "http://127.0.0.1:8080/api/bad-practices/concurrency/lost-update?parallelRequests=4"
+  "http://127.0.0.1:8081/api/bad-practices/concurrency/lost-update?parallelRequests=4"
 ```
 
 Четыре транзакции одновременно читают значение `0`, затем каждая записывает `1`.
@@ -97,10 +103,10 @@ curl -X POST \
 
 ```bash
 curl -X POST \
-  "http://127.0.0.1:8080/api/bad-practices/async/fire-and-forget?marker=lesson-4"
+  "http://127.0.0.1:8081/api/bad-practices/async/fire-and-forget?marker=lesson-4"
 
 curl \
-  "http://127.0.0.1:8080/api/bad-practices/async/fire-and-forget/lesson-4"
+  "http://127.0.0.1:8081/api/bad-practices/async/fire-and-forget/lesson-4"
 ```
 
 Первый запрос получает `202 Accepted`, после чего фоновый метод падает. Исключение
@@ -115,10 +121,10 @@ curl \
 
 ```bash
 SPRING_PROFILES_ACTIVE=insecure-actuator \
-  ./gradlew :workshop-app:bootRun
+  ./gradlew :bad-practices-examples:bootRun
 
 curl \
-  "http://127.0.0.1:8080/actuator/env/workshop.insecure-actuator-demo.visible-value"
+  "http://127.0.0.1:8081/actuator/env/workshop.insecure-actuator-demo.visible-value"
 ```
 
 Профиль публикует все Actuator endpoints без аутентификации и отключает сокрытие

@@ -1,0 +1,12 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: bad-practices-examples
+  datasource:
+    url: jdbc:h2:mem:bad-practices-examples
+    hikari:
+      maximum-pool-size: 4
+      connection-timeout: 1000
+transaction-demo:
+  slow-network-url: http://127.0.0.1:${server.port:8081}/api/transaction-demo/slow-network?delayMillis={delayMillis}
